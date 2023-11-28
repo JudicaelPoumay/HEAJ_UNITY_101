@@ -86,7 +86,9 @@ public class PlayerController : MonoBehaviour {
     // Check if the object is grounded
     bool CheckGrounded()
     {
-        return true;
+        
+        // If any corner is grounded, the object is grounded
+        return Physics.Raycast(transform.position, new Vector3(0, -1, 0), 0.7f);
     }
 
     void OnTriggerEnter(Collider collider)
