@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour {
     public float walkSpeed = 8f;
     public float jumpSpeed = 7f;
+    public AudioSource coinAudioSource;
 
     //to keep our rigid body
     Rigidbody rb;
@@ -22,7 +23,7 @@ public class PlayerController : MonoBehaviour {
     }
   
   // Update is called once per frame
-  void Update ()
+  void FixedUpdate ()
     {
         // Handle player walking
         WalkHandler();
@@ -97,10 +98,10 @@ public class PlayerController : MonoBehaviour {
         Vector3 corner3 = transform.position + new Vector3(sizeX / 2, -sizeY / 2 + 0.01f, -sizeZ / 2);
         Vector3 corner4 = transform.position + new Vector3(-sizeX / 2, -sizeY / 2 + 0.01f, -sizeZ / 2);
         // Send a short ray down the cube on all 4 corners to detect ground
-        bool grounded1 = Physics.Raycast(corner1, new Vector3(0, -1, 0), 0.01f);
-        bool grounded2 = Physics.Raycast(corner2, new Vector3(0, -1, 0), 0.01f);
-        bool grounded3 = Physics.Raycast(corner3, new Vector3(0, -1, 0), 0.01f);
-        bool grounded4 = Physics.Raycast(corner4, new Vector3(0, -1, 0), 0.01f);
+        bool grounded1 = Physics.Raycast(corner1, new Vector3(0, -1, 0), 0.1f);
+        bool grounded2 = Physics.Raycast(corner2, new Vector3(0, -1, 0), 0.1f);
+        bool grounded3 = Physics.Raycast(corner3, new Vector3(0, -1, 0), 0.1f);
+        bool grounded4 = Physics.Raycast(corner4, new Vector3(0, -1, 0), 0.1f);
         // If any corner is grounded, the object is grounded
         return (grounded1 || grounded2 || grounded3 || grounded4);
     }
@@ -115,6 +116,9 @@ public class PlayerController : MonoBehaviour {
         if (collider.gameObject.tag == "Coin")
         {
             print("Grabbing coin..");
+
+            // Play coin collection sound
+            coinAudioSource.Play();
 
             // Destroy coin
             Destroy(collider.gameObject);
