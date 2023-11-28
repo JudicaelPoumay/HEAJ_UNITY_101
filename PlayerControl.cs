@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour {
     public float walkSpeed = 8f;
     public float jumpSpeed = 7f;
-    public AudioSource coinAudioSource;
 
     //to keep our rigid body
     Rigidbody rb;
@@ -100,9 +99,6 @@ public class PlayerController : MonoBehaviour {
         if (collider.gameObject.tag == "Coin")
         {
             print("Grabbing coin..");
-
-            // Play coin collection sound
-            coinAudioSource.Play();
 
             // Destroy coin
             Destroy(collider.gameObject);
