@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour {
     public float walkSpeed = 8f;
     public float jumpSpeed = 7f;
+    public float rotationSpeed = 5.0f;
 
     //to keep our rigid body
     Rigidbody rb;
@@ -21,13 +22,16 @@ public class PlayerController : MonoBehaviour {
         coll = GetComponent<Collider>();
     }
   
-  // Update is called once per frame
-  void FixedUpdate ()
+    // Update is called once per frame
+    void FixedUpdate ()
     {
         // Handle player walking
         WalkHandler();
         //Handle player jumping
         JumpHandler();
+
+        float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
+        transform.Rotate(Vector3.up, mouseX);
     }
     // Make the player walk according to user input
     void WalkHandler()
@@ -88,7 +92,14 @@ public class PlayerController : MonoBehaviour {
     {
         
         // If any corner is grounded, the object is grounded
-        return Physics.Raycast(transform.position, new Vector3(0, -1, 0), 0.7f);
+        float height = 10f;
+        Renderer renderer = GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            height = renderer.bounds.size.y;
+            Debug.Log("Height of the GameObject is: " + height);
+        }
+        return Physics.Raycast(transform.position, new Vector3(0, -1, 0), height);
     }
 
     void OnTriggerEnter(Collider collider)
